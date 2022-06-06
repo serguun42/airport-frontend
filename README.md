@@ -9,7 +9,7 @@ All configuration, npm and webpack scripts are modified ones from `react-scripts
 ### Commands
 
 - `npm i --production` – Install only necessary npm dependencies. Or install everything with `npm i` for development.
-- `npm run start` – Start dev server. Files `.env.dtf` and `.env.tj` will not be used so consider creating [local environment file](#local-environment)
+- `npm run start` – Start dev server. File `.env.production` won't be used so consider creating [local environment file](#local-environment)
 - `npm run build` – [More about environment and builds](#sites-build-environment)
 - `npm run lint` – Check project with `eslint`
 - `npm run generate-openapi-redoc` – Build static Redoc API – [more about API](#api)
@@ -20,13 +20,15 @@ All configuration, npm and webpack scripts are modified ones from `react-scripts
 
 [`.env.production`](./.env.production) contains environment variables for building scripts and for client usage. Some of those env variables:
 
-| name                 | description/type                                                                                                        |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `REACT_APP_VERSION`  | Same as in [`package.json`](./package.json). Used for client cache control                                              |
-| `BUILD_PATH`         | Build directory for webpack output                                                                                      |
-| `GENERATE_SOURCEMAP` | Explicitly set to `false` (but modification in [`webpack.config.js`](./config/webpack.config.js#L32) allows to skip it) |
-| `PUBLIC_URL`         | Root of project                                                                                                         |
-| `REACT_APP_PRIMARY_COLOR` | Hex color, used in [manifest](./config/manifest.template.json) and [`index.html`](./public/index.html) templates |
+| name                        | description/type                                                                                                        |
+| --------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `REACT_APP_VERSION`         | Same as in [`package.json`](./package.json). Used for client cache control                                              |
+| `BUILD_PATH`                | Build directory for webpack output                                                                                      |
+| `GENERATE_SOURCEMAP`        | Explicitly set to `false` (but modification in [`webpack.config.js`](./config/webpack.config.js#L32) allows to skip it) |
+| `PUBLIC_URL`                | Root of project                                                                                                         |
+| `REACT_APP_PRIMARY_COLOR`   | Hex color, used in [manifest](./config/manifest.template.json) and [`index.html`](./public/index.html) templates        |
+| `REACT_APP_ANDROID_APP_URL` | Link to APK-file                                                                                                        |
+| `REACT_APP_ANDROID_APP_URL` | APK filename                                                                                                            |
 
 You may pass more variables, see standard `react-scripts` and `webpack` docs.
 

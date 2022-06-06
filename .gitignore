@@ -5,6 +5,7 @@
 *.bat
 public/docs/redoc.html
 public/docs/api/redoc.html
+public/app.apk
 
 # dependencies
 /node_modules

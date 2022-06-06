@@ -22,8 +22,8 @@ servers:
 tags:
   - name: account
     description: 'Account actions: login, check permission, etc…'
-  - name: entry
-    description: 'Create, delete and modify flights'
+  - name: flights
+    description: 'Get and modify flights'
 
 paths:
   /account/check:
@@ -68,6 +68,7 @@ paths:
     post:
       description: Sign into exsisting account
       operationId: accountSignin
+      security: []
       tags:
         - account
       responses:
@@ -117,11 +118,12 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPayload'      
+              $ref: '#/components/schemas/UserPayload'
   /account/signup:
     post:
       description: Sign into exsisting account
       operationId: accountSignup
+      security: []
       tags:
         - account
       responses:
@@ -183,7 +185,207 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserPayload'      
+              $ref: '#/components/schemas/UserPayload'
+
+  /flights/get:
+    get:
+      description: Get all flights
+      operationId: flightsGet
+      security: []
+      tags:
+        - flights
+      parameters:
+        - in: query
+          name: skip
+          schema:
+            type: number
+          required: false
+          description: How many flight will be skipped
+          example: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Flight'
+        '404':
+          description: Flights not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+  /flights/create:
+    post:
+      description: Create new flight entry
+      operationId: flightCreate
+      tags:
+        - flights
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Forbidden. Low account permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: Not acceptable payload (JSON-format usually)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+      requestBody:
+        description: Logging payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Flight'
+  /flights/edit:
+    post:
+      description: Edit existing flight entry
+      operationId: flightEdit
+      tags:
+        - flights
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Forbidden. Low account permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: Not acceptable payload (JSON-format usually)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+      requestBody:
+        description: Logging payload
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                updated:
+                  $ref: '#/components/schemas/Flight'
+  /flights/delete:
+    post:
+      description: Delete existing flight entry
+      operationId: flightDelete
+      tags:
+        - flights
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+        '403':
+          description: Passwords don't match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: Not acceptable payload (JSON-format usually)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+      requestBody:
+        description: Logging payload
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+
 security:
   - tokenAuth: []
   - cookieAuth: []
@@ -215,7 +417,7 @@ components:
       example:
         error: true
         code: 403
-        reason: no_permission
+        reason: Some reason
 
     UserPayload:
       type: object
@@ -224,3 +426,32 @@ components:
           type: string
         password:
           type: string
+
+    Flight:
+      type: object
+      properties:
+        id:
+          type: string
+        incoming:
+          type: boolean
+        target_name:
+          type: string
+        target_iata:
+          type: string
+        gate:
+          type: string
+        flight_number:
+          type: string
+        plane_model:
+          type: string
+        departure:
+          type: string
+          format: datetime
+        arrival:
+          type: string
+          format: datetime
+      required:
+        - incoming
+        - target_name
+        - target_iata
+        - flight_number

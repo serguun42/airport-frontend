@@ -16,15 +16,17 @@ info:
 servers:
   - description: Airport Project Production, API v1
     url: https://airport.serguun42.ru/api/v1/
+  - description: Airport Project Development, API v1
+    url: https://airport.localhost/api/v1/
 
 tags:
   - name: account
-    description: Check account and permissions
-  - name: create
-    description: Shorten url
+    description: 'Account actions: login, check permission, etc…'
+  - name: entry
+    description: 'Create, delete and modify flights'
 
 paths:
-  /account:
+  /account/check:
     get:
       description: Check account and permissions
       operationId: accountCheck
@@ -62,42 +64,42 @@ paths:
               schema:
                 type: string
                 example: '429 Too Many Requests'
-
-  /create:
-    get:
-      description: Shorten url
-      operationId: shortenUrl
+  /account/signin:
+    post:
+      description: Sign into exsisting account
+      operationId: accountSignin
       tags:
-        - create
-      parameters:
-        - in: query
-          name: to
-          schema:
-            type: string
-          required: true
-          description: Source url
-          example: 'https://serguun42.ru'
+        - account
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Created'
-        '401':
-          description: Not authorized
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  token:
+                    type: string
+                example:
+                  success: true
+                  token: abcdef
+        '403':
+          description: Passwords don't match
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/APIError'
-        '403':
-          description: Forbidden. Low account permissions
+        '404':
+          description: User not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/APIError'
         '406':
-          description: 'No <to> param or wrong <to> param format'
+          description: Not acceptable payload (JSON-format usually)
           content:
             application/json:
               schema:
@@ -109,12 +111,90 @@ paths:
               schema:
                 type: string
                 example: '429 Too Many Requests'
-
+      requestBody:
+        description: Logging payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPayload'      
+  /account/signup:
+    post:
+      description: Sign into exsisting account
+      operationId: accountSignup
+      tags:
+        - account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                  token:
+                    type: string
+                example:
+                  success: true
+                  token: abcdef
+        '403':
+          description: Passwords don't match
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: Not acceptable payload (JSON-format usually)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '409':
+          description: Duplicating user. Change nickname
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '422':
+          description: Too short nickname. Try larger
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+      requestBody:
+        description: Registering payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserPayload'      
 security:
+  - tokenAuth: []
   - cookieAuth: []
 
 components:
   securitySchemes:
+    tokenAuth:
+      type: apiKey
+      name: X-Token
+      in: header
+      description: Used for in-app actions
     cookieAuth:
       type: apiKey
       in: cookie
@@ -137,20 +217,10 @@ components:
         code: 403
         reason: no_permission
 
-    Created:
+    UserPayload:
       type: object
       properties:
-        success:
-          type: boolean
-          default: true
-        message:
+        username:
           type: string
-          enum:
-            - 'Successfully added entry'
-            - 'Already exists'
-          default: 'Successfully added entry'
-        id:
+        password:
           type: string
-        to:
-          type: string
-      additionalProperties: false

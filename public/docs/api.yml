@@ -1,0 +1,156 @@
+openapi: 3.0.0
+
+info:
+  description: API used in Airport Project
+  version: '1.0.0'
+  contact:
+    name: Airport Project
+    url: https://airport.serguun42.ru
+  license:
+    name: 'BSL-1.0'
+    url: 'https://github.com/serguun42/airport-frontend'
+  title: Airport API
+  x-logo:
+    url: '/img/wide.png'
+
+servers:
+  - description: Airport Project Production, API v1
+    url: https://airport.serguun42.ru/api/v1/
+
+tags:
+  - name: account
+    description: Check account and permissions
+  - name: create
+    description: Shorten url
+
+paths:
+  /account:
+    get:
+      description: Check account and permissions
+      operationId: accountCheck
+      tags:
+        - account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    default: true
+                example:
+                  success: true
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Forbidden. Low account permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+
+  /create:
+    get:
+      description: Shorten url
+      operationId: shortenUrl
+      tags:
+        - create
+      parameters:
+        - in: query
+          name: to
+          schema:
+            type: string
+          required: true
+          description: Source url
+          example: 'https://serguun42.ru'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Created'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Forbidden. Low account permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: 'No <to> param or wrong <to> param format'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+
+security:
+  - cookieAuth: []
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session_id
+      description: You can login to retrieve cookies on login-page
+
+  schemas:
+    APIError:
+      type: object
+      properties:
+        error:
+          type: boolean
+          default: true
+        code:
+          type: number
+        reason:
+          type: string
+      example:
+        error: true
+        code: 403
+        reason: no_permission
+
+    Created:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: true
+        message:
+          type: string
+          enum:
+            - 'Successfully added entry'
+            - 'Already exists'
+          default: 'Successfully added entry'
+        id:
+          type: string
+        to:
+          type: string
+      additionalProperties: false

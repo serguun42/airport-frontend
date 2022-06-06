@@ -1,0 +1,226 @@
+:root {
+  --text: #333;
+  --header: var(--primary);
+  --background: #e1e1e1;
+  --card: #fff;
+  --ripple: var(--primary);
+  --scroll: var(--primary);
+  --button-background: var(--primary);
+  --button-text: #fff;
+  --button-shadow: rgba(30, 30, 30, 0.1);
+  --message-background: #fff;
+  --message-text: #333;
+  --font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+}
+
+:root .is-dark {
+  --text: #e1e1e1;
+  --header: #121212;
+  --background: #121212;
+  --card: #333;
+  --button-background: var(--primary);
+  --button-text: #222;
+  --button-shadow: rgba(0, 0, 0, 0.3);
+  --message-background: #e1e1e1;
+  --message-text: #121212;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background-color: var(--background);
+
+  font-family: 'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.35em;
+}
+
+input {
+  font-family: var(--font-family);
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.default-pointer {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.default-scroll-color {
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll) transparent;
+}
+
+.default-scroll-color::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.default-scroll-color::-webkit-scrollbar {
+  width: 6px;
+  height: 0;
+  background-color: transparent;
+}
+
+@media (max-width: 500px) {
+  .default-scroll-color::-webkit-scrollbar {
+    width: 2px;
+  }
+}
+
+.default-scroll-color::-webkit-scrollbar-thumb {
+  background-color: var(--scroll);
+}
+
+.default-scroll-transparent {
+  overflow-y: hidden;
+  overflow-x: auto;
+
+  scrollbar-width: none;
+  scrollbar-color: transparent transparent;
+}
+
+.default-scroll-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.default-scroll-transparent::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  background-color: transparent;
+}
+
+.default-scroll-transparent::-webkit-scrollbar-thumb {
+  background-color: transparent;
+}
+
+.default-no-select {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.material-icons {
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+button,
+button[type='button'] {
+  font-family: var(--font-family);
+  appearance: none;
+  border: none;
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+a,
+a:visited {
+  color: inherit;
+}
+
+.default-title-font {
+  font-family: 'Product Sans', 'Futura', 'Inter', 'Roboto', Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  margin: 24px 0;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.35em;
+}
+
+h2 {
+  margin: 24px 0;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 48px;
+}
+
+h3 {
+  margin: 24px 0;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+h4 {
+  margin: 24px 0 16px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+h5 {
+  margin: 24px 0 16px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+h6 {
+  margin: 24px 0 16px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+::selection {
+  background-color: var(--primary);
+  color: #121212;
+}
+
+::selection .is-dark {
+  background-color: var(--primary);
+  color: #e1e1e1;
+}
+
+.karma--positive {
+  color: #07a23b;
+  background-color: #eefbf3;
+}
+
+.karma--negative {
+  color: #cd192e;
+  background-color: #fff1f1;
+}
+
+.is-dark .karma--positive {
+  color: #10ec0d;
+  background: rgba(7, 162, 59, 0.08);
+}
+
+.is-dark .karma--negative {
+  color: #ff0000;
+  background: rgba(205, 25, 46, 0.08);
+}

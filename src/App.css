@@ -1,0 +1,34 @@
+#app {
+  display: block;
+  position: relative;
+
+  min-height: calc(100% - 20px);
+  min-height: calc(100vh - 20px);
+
+  padding: 0;
+  margin: 0;
+}
+
+#content {
+  display: block;
+  position: relative;
+
+  width: 1650px;
+
+  margin: 0 auto;
+  padding: 0;
+}
+
+@media (max-width: 1650px) {
+  #content {
+    width: 100%;
+    max-width: 800px;
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 800px) {
+  #content {
+    padding: 0 6px;
+  }
+}

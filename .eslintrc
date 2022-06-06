@@ -1,0 +1,76 @@
+{
+	"env": {
+		"browser": true,
+		"es2020": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"airbnb",
+		"plugin:prettier/recommended",
+		"plugin:react/recommended",
+		"plugin:react/jsx-runtime"
+	],
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"ecmaVersion": 12,
+		"sourceType": "module"
+	},
+	"plugins": [
+		"react",
+		"prettier"
+	],
+	"rules": {
+		// suppress errors for missing 'import React' in files
+		"react/react-in-jsx-scope": "off",
+		"react/forbid-prop-types": "off",
+		"no-plusplus": "off",
+		// allow jsx syntax in js files (for next.js project)
+		// should add ".ts" if typescript project
+		"react/jsx-filename-extension": [
+			1,
+			{
+				"extensions": [
+					".js",
+					".jsx"
+				]
+			}
+		],
+		"no-param-reassign": "off",
+		"radix": "off",
+		"no-nested-ternary": "off",
+		"import/no-extraneous-dependencies": [
+			"error",
+			{
+				"devDependencies": true
+			}
+		],
+		"max-len": [
+			"error",
+			{
+				"code": 120
+			}
+		],
+		"jsx-a11y/click-events-have-key-events": "off",
+		"jsx-a11y/alt-text": "off",
+		"jsx-a11y/interactive-supports-focus": "off",
+		"jsx-a11y/no-static-element-interactions": "off",
+		"jsx-a11y/no-interactive-element-to-noninteractive-role": "off",
+		"jsx-a11y/no-noninteractive-element-interactions": "off",
+		"jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+		"jsx-a11y/no-noninteractive-tabindex": "off",
+		"jsx-a11y/media-has-caption": "off",
+		"jsx-a11y/control-has-associated-label": "off",
+		"jsx-a11y/label-has-associated-control": "off"
+	},
+	"ignorePatterns": [
+		"config/",
+		"scripts/"
+	],
+	"settings": {
+		"react": {
+			"version": "detect"
+		}
+	}
+}

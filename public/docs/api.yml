@@ -235,7 +235,7 @@ paths:
         - in: query
           name: id
           schema:
-            type: number
+            type: string
           required: true
           description: Get flight by its ID
           example: 20
@@ -248,6 +248,12 @@ paths:
                 $ref: '#/components/schemas/Flight'
         '404':
           description: Flight not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '406':
+          description: Not acceptable payload (JSON-format usually)
           content:
             application/json:
               schema:

@@ -187,10 +187,10 @@ paths:
             schema:
               $ref: '#/components/schemas/UserPayload'
 
-  /flights/get:
+  /flights/list:
     get:
-      description: Get all flights
-      operationId: flightsGet
+      description: List all flights
+      operationId: flightsList
       security: []
       tags:
         - flights
@@ -213,6 +213,41 @@ paths:
                   $ref: '#/components/schemas/Flight'
         '404':
           description: Flights not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+  /flights/get:
+    get:
+      description: Get single flight
+      operationId: flightsGet
+      security: []
+      tags:
+        - flights
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: number
+          required: true
+          description: Get flight by its ID
+          example: 20
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Flight'
+        '404':
+          description: Flight not found
           content:
             application/json:
               schema:

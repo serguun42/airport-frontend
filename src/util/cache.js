@@ -1,15 +1,13 @@
 import dispatcher from './dispatcher';
 import LogMessageOrError from './log';
 
-const CACHE_STORAGE_NAME = 'airport_react_cache_storage';
-
 /**
  * @param {boolean} showMessage
  * @returns {void}
  */
 export default function ClearCache() {
   caches
-    .delete(CACHE_STORAGE_NAME)
+    .delete(process.env.REACT_APP_CACHE_STORAGE_NAME)
     .then(() => {
       dispatcher.call('message', 'Cache has been cleared');
     })
@@ -25,13 +23,13 @@ export default function ClearCache() {
 
 dispatcher.link('clearCache', ClearCache);
 
-if ('serviceWorker' in navigator && process.env.NODE_ENV === 'production')
-  navigator.serviceWorker.register('/service-worker.js', {
-    scope: '/',
-  });
-
-window.addEventListener('load', () => {
-  if (process.env.NODE_ENV !== 'production') return;
+if (process.env.NODE_ENV === 'production') {
+  if ('serviceWorker' in navigator)
+    navigator.serviceWorker
+      .register('/service-worker.js', {
+        scope: '/',
+      })
+      .catch(LogMessageOrError);
 
   fetch('/build_hash')
     .then((res) => {
@@ -42,4 +40,4 @@ window.addEventListener('load', () => {
       if (versionFileContents.trim() !== process.env.REACT_APP_BUILD_HASH) ClearCache();
     })
     .catch(LogMessageOrError);
-});
+}

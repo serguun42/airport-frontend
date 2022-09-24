@@ -19,7 +19,7 @@
   text-align: center;
 }
 
-.home__api {
+.home__options {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -31,53 +31,10 @@
 }
 
 @media (max-width: 500px) {
-  .home__api {
+  .home__options {
     flex-direction: column;
     justify-content: flex-start;
   }
-}
-
-.home__api-option {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-
-  width: calc(50% - 8px);
-  padding: 20px 24px;
-  margin-bottom: 16px;
-
-  color: var(--text);
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 1.3em;
-  text-decoration: none;
-  text-align: center;
-
-  border-radius: 16px;
-  background-color: var(--card);
-
-  box-shadow: 0 0 2px 0 var(--button-shadow);
-}
-
-@media (max-width: 500px) {
-  .home__api-option {
-    width: 100%;
-    padding: 16px 20px;
-    border-radius: 4px;
-  }
-}
-
-.home__api-option:hover,
-.home__api-option:active {
-  transition: box-shadow 0.2s ease-in-out 0s;
-  box-shadow: 0 1px 2px 1px var(--button-shadow);
-}
-
-.home__api-option .material-icons {
-  margin-right: 8px;
 }
 
 .home__card {
@@ -109,7 +66,23 @@
   .home__card {
     padding: 16px 20px;
     border-radius: 4px;
+    margin-bottom: 6px;
   }
+}
+
+.home__card--option {
+  width: calc(50% - 8px);
+}
+
+@media (max-width: 500px) {
+  .home__card--option {
+    width: 100%;
+  }
+}
+
+.home__options .home__card:only-child {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .home__card:hover,
@@ -120,4 +93,14 @@
 
 .home__card .material-icons {
   margin-right: 8px;
+}
+
+.home__card .octicon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: -6px;
+
+  color: inherit;
+  fill: currentColor;
 }

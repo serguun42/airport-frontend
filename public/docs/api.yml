@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   description: API used in Airport Project
-  version: '1.0.0'
+  version: '1.1.0'
   contact:
     name: Airport Project
     url: https://airport.serguun42.ru
@@ -14,10 +14,10 @@ info:
     url: '/img/wide.png'
 
 servers:
-  - description: Airport Project Production, API v1
-    url: https://airport.serguun42.ru/api/v1/
-  - description: Airport Project Development, API v1
-    url: https://airport.localhost/api/v1/
+  - description: Airport Project Production, API v1.1
+    url: https://airport.serguun42.ru/api/v1.1/
+  - description: Airport Project Development, API v1.1
+    url: https://airport.localhost/api/v1.1/
 
 tags:
   - name: account
@@ -38,13 +38,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
-                example:
-                  success: true
+                $ref: '#/components/schemas/Session'
         '401':
           description: Not authorized
           content:
@@ -77,16 +71,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
-                  token:
-                    type: string
-                example:
-                  success: true
-                  token: abcdef
+                $ref: '#/components/schemas/Session'
         '403':
           description: Passwords don't match
           content:
@@ -132,16 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
-                  token:
-                    type: string
-                example:
-                  success: true
-                  token: abcdef
+                $ref: '#/components/schemas/Session'
         '403':
           description: Passwords don't match
           content:
@@ -186,6 +162,44 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserPayload'
+  /account/signout:
+    post:
+      description: Sign out and terminate session
+      operationId: accountSignout
+      tags:
+        - account
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '401':
+          description: You are not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Cannot logout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
 
   /flights/list:
     get:
@@ -277,11 +291,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
+                $ref: '#/components/schemas/Flight'
         '401':
           description: Not authorized
           content:
@@ -326,11 +336,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    default: true
+                $ref: '#/components/schemas/Flight'
         '401':
           description: Not authorized
           content:
@@ -459,6 +465,24 @@ components:
         error: true
         code: 403
         reason: Some reason
+
+    Session:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: 'Whether session and everything is valid'
+        username:
+          type: string
+        token:
+          type: string
+        can_edit:
+          type: boolean
+      example:
+        success: true
+        username: 'john_doe'
+        token: 'abcdef123'
+        can_edit: false
 
     UserPayload:
       type: object

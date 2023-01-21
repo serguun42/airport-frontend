@@ -79,7 +79,7 @@ function createDevServerConfig(proxy, allowedHost) {
        * This registers user provided middleware for proxy reasons
        * Moved here from `paths.proxySetup` (src/setupProxy.js)
        */
-      if (typeof process.env.API_PROXY_TARGET === 'string' && typeof process.env.API_PROXY_COOKIE === 'string')
+      if (typeof process.env.API_PROXY_TARGET === 'string' && typeof process.env.API_PROXY_TOKEN === 'string')
         middlewares.unshift({
           name: 'user-provided-api-proxy',
           path: '/api/',
@@ -88,7 +88,7 @@ function createDevServerConfig(proxy, allowedHost) {
             changeOrigin: true,
             secure: /^https:/.test(process.env.API_PROXY_TARGET) && !/\blocalhost\b/.test(process.env.API_PROXY_TARGET),
             headers: {
-              Cookie: `session_id=${process.env.API_PROXY_COOKIE}`,
+              'X-Token': process.env.API_PROXY_TOKEN,
             },
           }),
         });

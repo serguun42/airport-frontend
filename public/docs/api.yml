@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   description: API used in Airport Project
-  version: '1.1.0'
+  version: '1.2.0'
   contact:
     name: Airport Project
     url: https://airport.serguun42.ru
@@ -14,10 +14,10 @@ info:
     url: '/img/wide.png'
 
 servers:
-  - description: Airport Project Production, API v1.1
-    url: https://airport.serguun42.ru/api/v1.1/
-  - description: Airport Project Development, API v1.1
-    url: https://airport.localhost/api/v1.1/
+  - description: Airport Project Production, API v1.2
+    url: https://airport.serguun42.ru/api/v1.2/
+  - description: Airport Project Development, API v1.2
+    url: https://airport.localhost/api/v1.2/
 
 tags:
   - name: account
@@ -433,6 +433,41 @@ paths:
                 id:
                   type: string
 
+  /admin/listUsers:
+    get:
+      description: List all users – for admins only
+      operationId: listUsers
+      tags:
+        - admin
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRecord'
+        '401':
+          description: Not authorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '403':
+          description: Forbidden. Low account permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '429':
+          description: Too many requests
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: '429 Too Many Requests'
+  
 security:
   - tokenAuth: []
   - cookieAuth: []
@@ -476,13 +511,13 @@ components:
           type: string
         token:
           type: string
-        can_edit:
-          type: boolean
+        level:
+          type: number
       example:
         success: true
         username: 'john_doe'
         token: 'abcdef123'
-        can_edit: false
+        level: 0
 
     UserPayload:
       type: object
@@ -491,6 +526,14 @@ components:
           type: string
         password:
           type: string
+
+    UserRecord:
+      type: object
+      properties:
+        username:
+          type: string
+        level:
+          type: number
 
     Flight:
       type: object

@@ -61,6 +61,11 @@ export default function Home() {
         </a>
       </div>
 
+      <Link className="home__card default-pointer" to="/auth">
+        <i className="material-icons">login</i>
+        Login
+      </Link>
+
       <h3 className="home__title default-title-font default-no-select">Source code</h3>
 
       <div className="home__options">

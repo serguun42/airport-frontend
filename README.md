@@ -38,7 +38,7 @@ You may create own local env (e.g. [.env.development.local](./.env.development.l
 
 - set `HTTPS=true` to use https on local development server. If applied, set `SSL_CRT_FILE` and `SSL_KEY_FILE` as paths to certificate and key files.
 - `PORT` – port of dev server.
-- `API_PROXY_TARGET` and `API_PROXY_COOKIE` – if set, webpack will proxy requests to `/api` to target with stated proxy – see [webpack.createDevServerConfig.js](./config/webpack.createDevServerConfig.js#L78).
+- `API_PROXY_TARGET` and `API_PROXY_TOKEN` – if set, webpack will proxy requests to `/api` to target with stated proxy – see [webpack.createDevServerConfig.js](./config/webpack.createDevServerConfig.js#L78).
 - `DISABLE_ESLINT_PLUGIN=true` – disables esling plugin for webpack (warning overlay).
 
 ### Manifest and PWA

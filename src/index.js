@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import App from './App';
 import Home from './pages/Home';
+import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
 import Swagger from './pages/Swagger';
 import Message from './components/Message';
@@ -36,6 +37,7 @@ root.render(
         <Route element={<App />}>
           <Route path="/">
             <Route index element={<Home />} />
+            <Route path="auth" element={<Auth />} />
             <Route path="docs/api/swagger" element={<Swagger />} />
           </Route>
           <Route path="*" element={<NotFound />} />

@@ -19,6 +19,18 @@
   text-align: center;
 }
 
+.auth__subtitle {
+  display: block;
+  position: relative;
+
+  width: 100%;
+
+  margin: 0;
+  padding: 12px;
+
+  text-align: center;
+}
+
 .auth__card {
   display: flex;
   flex-direction: row;
